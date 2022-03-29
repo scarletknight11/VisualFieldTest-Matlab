@@ -27,10 +27,14 @@ while loop == 1
    %if statement to check lengths > max
    %all reversals
    %end
+   countrevs = 0;
    for i=1:length(xcor)
-        if length(reversals(i:length(xcor))) >= maxreversal
-            break
+        if length(reversals{i}) == maxreversal
+            countrevs = countrevs + 1;
         end
+   end
+   if countrevs == length(xcor)
+        loop = 0;
    end
 end
 
