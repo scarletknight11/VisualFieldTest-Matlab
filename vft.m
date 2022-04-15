@@ -1,46 +1,40 @@
+%call group functions from vft
+%get mean of all reversals
+
 loop = 1;
 xcor = [5, 3, 7];
 ycor = [2, 3, 4];
+
+grp = [1, 2, 1];
 maxreversal = 3;
 step = 0.05;
+avg = zeros(1,length(xcor));
 
 previouscontrastlevel = ones(1,length(xcor));
 reversals = cell(1,length(xcor));
 previousresponse = cell(1,length(xcor));
+
+g = group(previouscontrastlevel, previousresponse, reversals,...
+    maxreversal, xcor, ycor, step);
+
 for i=1:length(xcor)
-    previousresponse{i} = 'yes';
-end
-%creating visual field tests, 4 different stair cases, hard code coordinates
-while loop == 1
-   ind=randsample(length(xcor), 1);
-   %only go into staircase if number of reversal at current target location
-   %less then or equal to max revs
-   if (length(reversals{ind}) <= maxreversal)
-        s = staircase(previouscontrastlevel(ind), previousresponse{ind}, xcor(ind), ycor(ind), step);
-        previouscontrastlevel(ind) = s.contrastlevel;
-        previousresponse{ind} = s.response;
-        reversals{ind} =  cat(1, reversals{ind},s.reversal);
-   end
-     
-   %end program if length of all the reversals are greater equal to max at
-   %every locations, use for loop to calculate length of all reversals and
-   %if statement to check lengths > max
-   %all reversals
-   %end
-   countrevs = 0;
-   for i=1:length(xcor)
-        if length(reversals{i}) == maxreversal
-            countrevs = countrevs + 1;
-        end
-   end
-   if countrevs == length(xcor)
-        loop = 0;
-   end
+    %want all the reversal at ith location
+    %one we have all those reversals at ith location, get average of all
+    %store avgs into vector arrays
+    avg(i) = mean(g.reversals{i});
 end
 
-%calculate mean of all reversals at every locations
-%use for loop
-%for i=1:length(xcor)
-%    if length(reversals(i:length(xcor))) == maxreversal
-%    end
-%end
+%IMAGINE 2 GROUPS, 2 designate the group create variable
+%xcor set x and ycor is set of y coordinates
+%vector of 1's and 2's to speicify which group vectors are stored in
+%seperate vector that specifies group 1 and group 2
+%store all results from each group
+
+for i=1:length(unique(grp))
+    xcor1 = xcor(grp(i)== 1)
+
+end
+%output the order in which coordinate was presented
+% one vector for xcor and other vector for ycoordinate, third vector for
+% group number, 4th one is averages
+% put 4 in a structure, like output of staircase

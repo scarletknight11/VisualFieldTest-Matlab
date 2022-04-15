@@ -30,7 +30,7 @@ while loop == 1
     if invalid == 0
         if(~strcmp(newresponse, previousresponse))
             reversal = cat(1, reversal, newcontrastlevel);
-            disp(reversal);
+            %disp(reversal);
         end
         loop = 0;
     end
